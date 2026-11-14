@@ -89,23 +89,28 @@ function setupClipboard() {
   }
 }
 
-// Real Download Action Trigger
+// Real Download Action Trigger using GitHub Releases CDN
 function triggerDownload(osType) {
+  const GITHUB_RELEASE_BASE = 'https://github.com/aary-create/aarys-ide-website/releases/download/v1.0.0';
+
   const downloads = {
     mac_arm: {
-      url: "downloads/AarysIDE-macOS-arm64.zip",
-      filename: "AarysIDE-macOS-arm64.zip",
-      label: "macOS Apple Silicon (M1/M2/M3/M4)"
+      url: `${GITHUB_RELEASE_BASE}/AarysIDE-macOS-arm64.zip`,
+      fallbackUrl: 'downloads/AarysIDE-macOS-arm64.zip',
+      filename: 'AarysIDE-macOS-arm64.zip',
+      label: 'macOS Apple Silicon (M1/M2/M3/M4)'
     },
     mac_intel: {
-      url: "downloads/AarysIDE-macOS-x64.zip",
-      filename: "AarysIDE-macOS-x64.zip",
-      label: "macOS Intel"
+      url: `${GITHUB_RELEASE_BASE}/AarysIDE-macOS-x64.zip`,
+      fallbackUrl: 'downloads/AarysIDE-macOS-x64.zip',
+      filename: 'AarysIDE-macOS-x64.zip',
+      label: 'macOS Intel'
     },
     android_apk: {
-      url: "downloads/AarysIDE-Android-v1.0.0.apk",
-      filename: "AarysIDE-Android-v1.0.0.apk",
-      label: "Android Universal APK"
+      url: `${GITHUB_RELEASE_BASE}/AarysIDE-Android-v1.0.0.apk`,
+      fallbackUrl: 'downloads/AarysIDE-Android-v1.0.0.apk',
+      filename: 'AarysIDE-Android-v1.0.0.apk',
+      label: 'Android Universal APK'
     }
   };
 
@@ -115,6 +120,7 @@ function triggerDownload(osType) {
   const link = document.createElement('a');
   link.href = item.url;
   link.setAttribute('download', item.filename);
+  link.setAttribute('target', '_blank');
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -136,7 +142,7 @@ function showDownloadNotice(filename, label) {
   notice.style.zIndex = '9999';
   notice.style.fontSize = '14px';
   notice.style.lineHeight = '1.5';
-  notice.innerHTML = `<div style="font-weight: 700; color: #10b981; margin-bottom: 4px;">✓ Downloading ${filename}</div><div>Your download for <strong>${label}</strong> has started.</div>`;
+  notice.innerHTML = `<div style="font-weight: 700; color: #10b981; margin-bottom: 4px;">✓ Downloading ${filename}</div><div>Your download for <strong>${label}</strong> has started via GitHub Releases CDN.</div>`;
   
   document.body.appendChild(notice);
   setTimeout(() => {
