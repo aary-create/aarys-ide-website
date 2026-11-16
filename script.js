@@ -116,14 +116,8 @@ function triggerDownload(osType) {
 
   const item = downloads[osType] || downloads.mac_arm;
 
-  // Trigger actual file download
-  const link = document.createElement('a');
-  link.href = item.url;
-  link.setAttribute('download', item.filename);
-  link.setAttribute('target', '_blank');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  // Direct same-origin download to avoid cross-domain mobile blocks
+  window.location.href = item.fallbackUrl;
 
   showDownloadNotice(item.filename, item.label);
 }
